@@ -18,3 +18,10 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::get('admin/article/show','AdminController@uploadarticle');//创建文章
 });
 
+Route::get('/', function () {
+	return view('home');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
