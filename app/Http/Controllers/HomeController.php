@@ -24,8 +24,8 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {   
-        $user = $request->user();
-        dd(Auth::viaRemember($user));
+        // $user = $request->user();
+        // dd(Auth::viaRemember($user));
 
         // dd($user);
 
