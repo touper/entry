@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -14,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -24,11 +25,30 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {   
-        // $user = $request->user();
-        // dd(Auth::viaRemember($user));
-
-        // dd($user);
-
+        
         return view('home');
+    }
+
+    /**
+     *  用户注册ajax验证
+     *
+     */
+    public function reg(Request $request)
+    {
+        $email = $request->input('email');
+
+        $user = User::where('email',trim($email))->first();
+
+        if($user) {
+            return response()->json([
+                'status' => 0,
+                'msg' => '邮箱已经注册'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 1
+            ]);
+        }
+
     }
 }
