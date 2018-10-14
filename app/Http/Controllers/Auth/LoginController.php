@@ -52,9 +52,8 @@ class LoginController extends Controller
             return view('auth.login');
         }
         if($request->cookie('auth')) $password = $request->cookie('auth');
-        
         $user = User::where($username,$user_name)->first();
-
+        // dd(Hash::check(Hash::make('111111'),$user->password));
         if(Hash::check(Hash::make('111111'),$user->password)) {
             echo 1111;die;
             $request->session()->regenerate();
@@ -84,7 +83,7 @@ class LoginController extends Controller
                 $this->clearLoginAttempts($request);
 
                 \Cookie::queue($username,$request->$username,60*24*7);
-                \Cookie::queue('auth',$request->password,60*24*7);
+                \Cookie::queue('password',$request->password,60*24*7);
                 return  redirect('/');
             }
             return $this->sendLoginResponse($request);
