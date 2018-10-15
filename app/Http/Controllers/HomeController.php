@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -26,13 +26,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {   
-        // $username = $this->username();
-        // dd($username);
-        $user = User::where('email','123@123.com')->first();
-        var_dump($request->cookie('password'));
-        echo '<br>';
-        $password = $request->cookie('password');
-        dd(Hash::check("111111",$password));
         return view('home');
     }
 

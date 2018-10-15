@@ -45,21 +45,22 @@ class LoginController extends Controller
     public function showLoginForm(Request $request)
     {
         // 获取cookie
-        $username = $this->username();
-        if($request->cookie($username)) {
-            $user_name = $request->cookie($username);
-        } else {
-            return view('auth.login');
+        if($request->cookie('autoLogin')) {
+            $username = $this->username();
+            if($request->cookie($username)) {
+                $user_name = $request->cookie($username);
+            } else {
+                return view('auth.login');
+            }
+
+            $user = User::where($username,$user_name)->first();
+
+            if($user) {
+                Auth::guard('web')->login($user);
+                return redirect('/');
+            }
         }
-        if($request->cookie('auth')) $password = $request->cookie('auth');
-        $user = User::where($username,$user_name)->first();
-        // dd(Hash::check(Hash::make('111111'),$user->password));
-        if(Hash::check(Hash::make('111111'),$user->password)) {
-            echo 1111;die;
-            $request->session()->regenerate();
-        } else {
-            return view('auth.login');
-        }
+        return view('auth.login');
         
     }
 
@@ -83,7 +84,7 @@ class LoginController extends Controller
                 $this->clearLoginAttempts($request);
 
                 \Cookie::queue($username,$request->$username,60*24*7);
-                \Cookie::queue('password',$request->password,60*24*7);
+                \Cookie::queue('autoLogin',1,60*24*7);
                 return  redirect('/');
             }
             return $this->sendLoginResponse($request);
@@ -94,4 +95,19 @@ class LoginController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
+    /**
+     * 退出
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->flush();
+
+        $request->session()->regenerate();
+
+        \Cookie::queue('autoLogin',0);
+
+        return redirect('/');
+    }
 }

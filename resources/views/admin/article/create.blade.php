@@ -16,8 +16,7 @@
 
 @section('content')
     <h2 class="page-header">撰写新文章</h2>
-    <form method="POST" action="#" accept-charset="utf-8">
-        {!! csrf_field() !!}
+    <form method="POST" action="{{url('/article')}}" accept-charset="utf-8">
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">主要内容</a></li>
@@ -26,6 +25,11 @@
             <div class="tab-content">
 
                 <div class="tab-pane active" id="tab_1">
+                    @if (session('error'))
+                        <div class="alert alert-error">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <div class="form-group">
                         <label>标题
                             <small class="text-red">*</small>
@@ -40,7 +44,7 @@
                         <input required="required" type="text" class="form-control" name="author" autocomplete="off"
                                placeholder="作者" maxlength="80">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>选择标签
                             <small class="text-red">*</small>
                         </label>
@@ -58,17 +62,19 @@
                             <option value="1">是</option>
                             <option value="2">否</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="form-group">
-                        <label>正文(Markdown)
+                        <label>内容
                             <small class="text-red">*</small>
-                            <span class="text-green">min:20</span></label>
-                        <div id="editormd_id">
-                            <textarea name="content" style="display:none;"></textarea>
+                            <span class="text-green">min:20</span>
+                        </label>
+                        <div id="ueditor" class="edui-default">
+                            @include('UEditor::head')
                         </div>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">发布文章</button>
+                {!! csrf_field() !!}
             </div>
         </div>
     </form>
@@ -77,13 +83,13 @@
 @section('other-js')
     {!! editor_js() !!}
     <script src="//cdn.bootcss.com/select2/4.0.3/js/select2.full.min.js"></script>
+    <script id="ueditor">
+    </script>
     <script>
-        $(".js-example-basic-multiple").select2({
-            placeholder: "选择一个标签"
-        });
-        $(".js-example-placeholder-single").select2({
-            placeholder: "选择是否置顶",
-            allowClear: true
+        window.UEDITOR_HOME_URL = "http://entry.cc/"
+        var ue=UE.getEditor("ueditor");
+        ue.ready(function(){
+             ue.execCommand('serverparam','_token','{{ csrf_token() }}');
         });
     </script>
 @endsection

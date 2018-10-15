@@ -11,7 +11,7 @@
 @stop
 
 @section('content')
-    <a href="{{url('admin/article/show')}}" class="btn btn-primary margin-bottom">撰写新文章</a>
+    <a href="{{url('/article/create')}}" class="btn btn-primary margin-bottom">撰写新文章</a>
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">文章列表</h3>
@@ -27,6 +27,11 @@
                 </form>
             </div>
         </div>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="box-body table-responsive">
             <table class="table table-hover table-bordered">
                 <tbody>
@@ -35,22 +40,29 @@
                     <th>操作</th>
                     <th>标题</th>
                     <th>作者</th>
-                    <th>浏览次数</th>
                     <th>发布时间</th>
                     <th>更新时间</th>
                 </tr>
                 <!--tr-th end-->
+                @foreach($articles as $article)
                 <tr>
                     <td>
-                        <a style="font-size: 16px" href="#"><i class="fa fa-fw fa-pencil" title="修改"></i></a>
-                        <a style="font-size: 16px" href="#"><i class="fa fa-fw fa-trash-o" title="删除"></i></a>
+                        <form action="{{url('/article/'.$article['id'].'/edit')}}" method="get">
+                            <button type="submit" class="btn btn-info">修改</button>
+                        </form>
+                        
+                        <form action="{{url('/article/'.$article['id'])}}" method='post'>
+                            <button class="btn btn-danger">删除</button>
+                            {{ method_field('DELETE') }}
+                            {!! csrf_field() !!}
+                        </form>
                     </td>
-                    <td class="text-muted">Editor.md For Laravel5</td>
-                    <td class="text-green">LaravelChen</td>
-                    <td class="text-red">233</td>
-                    <td class="text-navy">2017-03-22 20:08:43</td>
-                    <td class="text-navy">2017-03-22 20:08:43</td>
+                    <td class="text-muted">{{$article['title']}}</td>
+                    <td class="text-green">{{$article['author']}}</td>
+                    <td class="text-navy">{{$article['created_at']}}</td>
+                    <td class="text-navy">{{$article['updated_at']}}</td>
                 </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

@@ -146,7 +146,7 @@
                          </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('admin/article/index')}}"><i class="fa fa-star-o"></i>文章</a></li>
+                        <li><a href="{{url('article')}}"><i class="fa fa-star-o"></i>文章</a></li>
                         <li><a href=""><i class="fa fa-star-o"></i>评论</a></li>
                     </ul>
                 <li class="header">LABELS</li>
