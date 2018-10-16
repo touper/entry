@@ -13,10 +13,10 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest:admin', ['except' => 'logout']);
     }
 
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/dash';
 
     public function showLoginForm()
     {
@@ -30,7 +30,24 @@ class LoginController extends Controller
      */
     protected function guard()
     {
-        return \Auth::guard('admin');
+        return auth()->guard('admin');
+    }
+
+    protected function username()
+    {
+        return 'name';
+    }
+
+    public function login(Request $request)
+    {
+        if($this->guard()->attempt($this->credentials($request))) {
+
+            $request->session()->regenerate();
+
+            $this->clearLoginAttempts($request);
+
+            return redirect('/dash');
+        }
     }
 
     /**
@@ -45,8 +62,6 @@ class LoginController extends Controller
 
         $request->session()->flush();
 
-        $request->session()->regenerate();
-
-        return redirect('/admin');
+        return redirect('/login');
     }
 }

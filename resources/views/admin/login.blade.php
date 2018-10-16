@@ -5,20 +5,20 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+                <div class="panel-heading">登录</div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="username" class="col-md-4 control-label">用户名</label>
 
                             <div class="col-md-6">
-                                <input id="username" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+                                <input id="name" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
 
-                                @if ($errors->has('username'))
+                                @if ($errors->has('name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
+                                        <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -59,6 +59,7 @@
                                 </a>
                             </div>
                         </div>
+                        {{ csrf_field() }}
                     </form>
                 </div>
             </div>

@@ -8,6 +8,10 @@ use App\Article;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,7 @@ class ArticleController extends Controller
     public function index()
     {
         //
-        $articles = Article::get();
+        $articles = Article::orderBy('created_at','desc')->get();
         return view('admin.article.index',['articles'=>$articles]);
     }
 
@@ -40,6 +44,15 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'title' => 'required',
+            'author' => 'required',
+            'editorValue' => 'required'
+        ],[
+            'title.required' => '标题不能为空',
+            'author.required' => '作者不能为空',
+            'editorValue.required' => '内容不能为空',
+        ]);
         $post = $request->all();
 
         $article = new Article;
@@ -53,7 +66,6 @@ class ArticleController extends Controller
         } else {
         	return back()->with('error','文章添加失败');
         }
-
 
     }
 
@@ -92,10 +104,20 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, [
+            'title' => 'required',
+            'author' => 'required',
+            'editorValue' => 'required'
+        ],[
+            'title.required' => '标题不能为空',
+            'author.required' => '作者不能为空',
+            'editorValue.required' => '内容不能为空',
+        ]);
+        
     	$article = Article::findOrFail($id);
 
-    	$article->title = $request->title;
-    	$article->author = $request->author;
+    	$article->title = trim($request->title);
+    	$article->author = trim($request->author);
     	$article->content = $request->editorValue;
 
     	if($article->save()) {

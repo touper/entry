@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Repository\AdminRepostiry;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -16,13 +18,14 @@ class AdminController extends Controller
     public function __construct(AdminRepostiry $admin)
     {
         $this->admin = $admin;
+        $this->middleware('auth');
     }
 
     /**
      * 显示后台首页
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         $collects = $this->admin->rdashboard();
         return view('admin.dashboard.index', compact('collects'));

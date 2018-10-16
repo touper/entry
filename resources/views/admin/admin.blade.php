@@ -42,7 +42,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{url('dist/img/avatar.jpeg')}}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Admin Info</span>
+                            <span class="hidden-xs">{{Auth::user()->name}}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="user-header">
@@ -73,7 +73,7 @@
                                     <a href="#" class="btn btn-default btn-flat">个人资料</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">退出</a>
+                                    <a href="{{url('/admin/logout')}}" class="btn btn-default btn-flat">退出</a>
                                 </div>
                             </li>
                         </ul>
@@ -97,7 +97,7 @@
                     <img src="{{url('dist/img/avatar.jpeg')}}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>LaravelChen</p>
+                    <p>{{Auth::user()->name}}</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -117,11 +117,11 @@
             <ul class="sidebar-menu">
                 <li class="header">主导航栏</li>
                 <li>
-                    <a href="{{url('/dashboard')}}">
+                    <a href="{{url('/dash')}}">
                         <i class="fa fa-dashboard"></i> <span>控制面板</span>
                     </a>
                 </li>
-                <li class="treeview">
+                <!-- <li class="treeview">
                     <a href="#">
                         <i class="fa fa-user"></i>
                         <span>用户管理</span>
@@ -135,7 +135,7 @@
                         <li><a href="#"><i class="fa fa-star-o"></i>角色</a></li>
                         <li><a href="#"><i class="fa fa-star-o"></i>权限</a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li class="treeview">
                     <a href="#">
@@ -147,7 +147,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('article')}}"><i class="fa fa-star-o"></i>文章</a></li>
-                        <li><a href=""><i class="fa fa-star-o"></i>评论</a></li>
+                        <!-- <li><a href=""><i class="fa fa-star-o"></i>评论</a></li> -->
                     </ul>
                 <li class="header">LABELS</li>
                 <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
